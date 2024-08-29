@@ -5,11 +5,13 @@ import "../../../../public/css/style.css"
 import { FaPlay } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Skeleton from '../../Skeleton';
 
-
-const MultiCarouselLanding = ({setisHover, isHover, setLoading, isLoading}) => {
-
+const MultiCarouselLanding = ({ setisHover, isHover }) => {
+    const [isLoading, setLoading] = useState(false);
     const [animeList, setAnimeList] = useState([]);
+
     const responsive = {
         desktop: {
             breakpoint: { max: 3000, min: 1024 },
@@ -62,14 +64,20 @@ const MultiCarouselLanding = ({setisHover, isHover, setLoading, isLoading}) => {
         completeAnimeWithGenre();
     }, []);
 
-    // if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return (
+        <div className='my-5'>
+            <Skeleton arraySkeleton={6}/>
+        </div>
+    );
     return (
         <div className="parent">
-            <div className='flex justify-between items-center'>
-                <h1 className="text-xl font-bold text-gray-900 ml-10">Complete Anime</h1>
-                <div className='flex items-center mr-10'>
+            <div className='flex justify-between items-center mt-3'>
+                <h1 className="text-xl font-bold  ml-10">Complete Anime</h1>
+                <div className='flex items-center mr-10 '>
+                    <Link to={'/complete'}>
                     <p className='text-sm font-semibold'>Lihat lebih banyak</p>
-                    <IoIosArrowForward className="text-gray-600 ml-1 mt-1" />
+                    </Link>
+                    <IoIosArrowForward className=" ml-1 mt-1" />
                 </div>
             </div>
             <Carousel
@@ -84,9 +92,9 @@ const MultiCarouselLanding = ({setisHover, isHover, setLoading, isLoading}) => {
                 {animeList.map((anime, index) => {
 
                     return (
-                        <div className="slider relative h-fit" key={index} 
-                        onMouseEnter={() => setisHover(anime.id)} 
-                        onMouseLeave={() => setisHover(null)}>
+                        <div className="slider relative h-fit" key={index}
+                            onMouseEnter={() => setisHover(anime.id)}
+                            onMouseLeave={() => setisHover(null)}>
                             <div className={`transition-transform duration-75 ease-in-out ${isHover === anime.id ? 'transform scale-[1.2] rounded-lg' : ''}`}>
                                 <div className="relative cursor-pointer">
                                     <img
@@ -95,23 +103,27 @@ const MultiCarouselLanding = ({setisHover, isHover, setLoading, isLoading}) => {
                                         className={`w-full ${isHover === anime.id ? 'rounded-lg' : ''}`}  // Tambahkan rounded-lg di sini saat hover
                                     />
                                     {isHover === anime.id && (
-                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-sky-500/10 via-sky-400/95 to-sky-400  p-4 flex flex-col justify-between items-start h-2/3 rounded-lg">
-                                            <div className='self-center'>
-                                                <FaPlay className='text-6xl text-white' />
-                                            </div>
-                                            <div className='flex flex-col items-start gap-2'>
-                                                <p className='text-xs font-bold font-sans text-white'>{anime.title}</p>
-                                                <div className="flex flex-row gap-1">
-                                                    {anime.genres.map((genre, index) => (
-                                                        <p key={index} className="text-[0.6rem] font-semibold font-sans text-white bg-sky-500 px-2 py-[0.15rem] rounded-sm">
-                                                            {genre}
-                                                        </p>
-                                                    ))}
-                                                </div>
+                                        <Link to={`/anime/${anime.id}`} className="absolute top-0 left-0 right-0 bottom-0">
 
-                                                <p className='text-xs font-semibold font-sans text-white'>{anime.episode.replace('Episode', ' Episode')}</p>
+                                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-sky-500/10 via-sky-400/95 to-sky-400  p-4 flex flex-col justify-between items-start h-2/3 rounded-lg">
+                                                <div className='self-center'>
+                                                    <FaPlay className='text-6xl text-white' />
+                                                </div>
+                                                <div className='flex flex-col items-start gap-2'>
+                                                    <p className='text-xs font-bold font-sans text-white'>{anime.title}</p>
+                                                    <div className="flex flex-row gap-1">
+                                                        {anime.genres.map((genre, index) => (
+                                                            <p key={index} className="text-[0.6rem] font-semibold font-sans text-white bg-sky-500 px-2 py-[0.15rem] rounded-sm">
+                                                                {genre}
+                                                            </p>
+                                                        ))}
+                                                    </div>
+
+                                                    <p className='text-xs font-semibold font-sans text-white'>{anime.episode.replace('Episode', ' Episode')}</p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
+
                                     )}
                                     <p className='text-sm font-semibold font-sans'>{anime.title}</p>
                                 </div>

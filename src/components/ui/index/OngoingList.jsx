@@ -4,8 +4,10 @@ import { FaPlay } from "react-icons/fa";
 import "../../../../public/css/style.css";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from 'react-router-dom';
+import Skeleton from '../../Skeleton';
 
-const OngoingList = ({ setisHover, isHover, setLoading, isLoading }) => {
+const OngoingList = ({ setisHover, isHover }) => {
+    const [isLoading, setLoading] = useState(false);
     const [ongoingAnimeList, setOngoingAnimeList] = useState([]);
 
     const getOngoingAnimeList = async () => {
@@ -26,14 +28,20 @@ const OngoingList = ({ setisHover, isHover, setLoading, isLoading }) => {
         getOngoingAnimeList();
     }, []);
 
-    // if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return (
+        <div className='my-5'>
+            <Skeleton arraySkeleton={6} />
+        </div>
+    );
 
     return (
         <div className="mx-10">
             <div className='flex justify-between items-center px-3'>
                 <h1 className='font-bold text-xl'>Ongoing Anime</h1>
                 <div className='flex items-center'>
+                    <Link to={"/ongoing"}>
                     <p className='text-sm font-semibold'>Lihat lebih banyak</p>
+                    </Link>
                     <IoIosArrowForward className='ml-1' />
                 </div>
             </div>

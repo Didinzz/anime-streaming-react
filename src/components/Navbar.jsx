@@ -50,9 +50,9 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
 
             <div className='flex justify-center items-center gap-8'> 
 
-                <div className='hidden sm:flex justify-center items-center gap-1 p-2 bg-base-300 rounded-md w-24 h-8'>
+                <div className={`hidden sm:flex justify-center items-center gap-1 p-2 ${isScrolled ? 'bg-base-300' : 'bg-gray-200 text-black'} rounded-md w-24 h-8`}>
                     <FiDownload size={14} />
-                    <p className=' text-[0.8em]'>Aplikasi</p>
+                    <p className={`text-[0.8em] `} >Aplikasi</p>
                 </div>
 
                 {/* Premium */}
@@ -63,9 +63,9 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
                         <p className='text-white text-sm'>Premium</p>
                     </div>
                     {/* dropdown premium */}
-                        <div className='absolute top-8 -left-[17rem] bg-base-100 rounded-md shadow-md w-[28rem] h-fit dropdown-content menu' tabIndex={0}>
+                        <div className=' absolute top-8 -left-[17rem] bg-base-100 rounded-md shadow-md w-[28rem] h-fit dropdown-content menu' tabIndex={0}>
                             <div className='p-6 flex justify-between items-center' >
-                                <h3 className='font-bold font-sans text-[1.1em]'>Ketuntungan Premium</h3>
+                            <h3 className='font-bold  text-[1.1em]'>Ketuntungan Premium</h3>
                                 <IoIosArrowForward size={20} />
                             </div>
                             <div className='flex flex-col gap-5 px-6 mb-6'>
@@ -112,14 +112,14 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
                         <img src="/image/pp.jpg" className='w-8 h-8 rounded-full border border-gray-600 cursor-pointer' alt="" />
                     </div>
                     {/* dropdown profile */}
-                    <div className='dropdown-content menu absolute  -left-[26rem] z-[1] bg-white rounded- shadow-md w-[28rem] h-fit ' tabIndex={0}>
+                    <div className='dropdown-content menu absolute  -left-[26rem] z-[1] bg-base-100 rounded- shadow-md w-[28rem] h-fit ' tabIndex={0}>
                         <div className='flex gap-3 justify-normal items-center mb-5 px-6 pt-6'>
                             <img src="/image/pp.jpg" className='w-10 h-10 rounded-full border border-gray-600' alt="" />
-                            <h4 className='text-gray-900 font-bold font-sans text-lg '>Didin_Zakaria</h4>
+                            <h4 className=' font-bold font-sans text-lg '>Didin_Zakaria</h4>
                         </div>
                         <hr className='border-gray-300 pb-2' />
                         <div className='px-1 py-4 flex flex-col justify-center gap-4'>
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <FaRegEnvelope size={20} />
                                     <h4>Pemberitahuan Sistem</h4>
@@ -128,19 +128,19 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
                                     <IoIosArrowForward size={20} />
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <RiErrorWarningLine size={20} />
                                     <h4>Profil Saya</h4>
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <FiUpload size={20} />
                                     <h4>Pusat Kreator</h4>
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <FiGlobe size={18} />
                                     <h4>Bahasa: Bahasa Indonesia</h4>
@@ -149,7 +149,7 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
                                     <IoIosArrowForward size={20} />
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <BsChatSquare size={17} />
                                     <h4>Pengiriman Feedback</h4>
@@ -158,7 +158,7 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
                         </div>
                         <hr className='border-gray-300 pb-2' />
                         <div className="py-4">
-                            <div className='flex justify-between items-center hover:bg-gray-200 py-2 cursor-pointer'>
+                            <div className='flex justify-between items-center hover:bg-base-300 rounded-md py-2 cursor-pointer'>
                                 <div className='flex justify-normal items-center gap-3 px-6'>
                                     <MdOutlineLogout size={20} />
                                     <h4>Logout</h4>

@@ -5,24 +5,35 @@ import Navbar from '../components/Navbar';
 import { FaPlay } from "react-icons/fa";
 import Footer from '../components/Footer';
 import TabelListEpisode from '../components/ui/index/TabelListEpisode';
+import Skeleton from '../components/Skeleton';
 
 const DetailAnime = () => {
   const { id } = useParams();
   const [detailAnime, setDetailAnime] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getDetailAnime = async () => {
     const apiUrl = import.meta.env.VITE_API;
     try {
+      setLoading(true);
       const response = await axios.get(`${apiUrl}/anime/${id}`);
       setDetailAnime(response.data);
     } catch (error) {
       console.log(error);
-    }
+    }finally {
+      setLoading(false);
+    }s
   };
 
   useEffect(() => {
     getDetailAnime();
   }, []);
+
+  if (loading) return (
+    <div className='flex items-center justify-center h-screen'>
+      <Skeleton arraySkeleton={1} />
+    </div>
+  );
 
   return (
     <>

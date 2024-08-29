@@ -8,12 +8,11 @@ import Footer from '../components/Footer';
 
 const Index = () => {
   const [isHover, setisHover] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setisSidebarOpen] = useState(false)
 
 
-  return (
+return (
     <>
       <Navbar isScrolled={isScrolled} setIsScrolled={setIsScrolled} isSidebarOpen={isSidebarOpen} setisSidebarOpen={setisSidebarOpen}/>
       {/* {isSidebarOpen && ( */}
@@ -21,8 +20,8 @@ const Index = () => {
       {/* )} */}
       <div className='' >
         <CarouselLanding />
-        <CompleteAnimeListCarousel setisHover={setisHover} isHover={isHover} setLoading={setLoading} isLoading={isLoading}/>
-        <OngoingList setisHover={setisHover} isHover={isHover} setLoading={setLoading} isLoading={isLoading} />
+        <CompleteAnimeListCarousel setisHover={setisHover} isHover={isHover}/>
+        <OngoingList setisHover={setisHover} isHover={isHover} />
       </div>
       <Footer />
     </>
