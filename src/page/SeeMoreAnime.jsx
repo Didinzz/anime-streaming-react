@@ -1,70 +1,43 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router';
 import Navbar from '../components/Navbar';
 import Pagination from '../components/ui/SeeMore/Pagination';
 import backgroundImage from '../../public/image/animekeren.jpg';
-import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
+import Skeleton from '../components/Skeleton';
 
 const CompleteAnime = () => {
   const [dataAnime, setDataAnime] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(null);
+  const [page, setPage] = useState({});
+  const [pagination, setPagination] = useState(1);
   const { type } = useParams();
   const apiUrl = import.meta.env.VITE_API;
-
-  const getDataAnime = async (currentPage) => {
+  const scrollRef = useRef(null);
+  const getDataAnime = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/${type}/page/${currentPage}`);
-      const animeList = response.data.animeList;
-
-      if (animeList.length === 0 && currentPage > 1) {
-        setTotalPage(currentPage - 1);
-        setPage(currentPage - 1); // Kembali ke halaman sebelumnya jika tidak ada data di halaman saat ini
-      } else {
-        setDataAnime(animeList);
-        if (totalPage === null) {
-          calculateMaxPage(type);
-        }
-      }
+      const response = await axios.get(`${apiUrl}/${type}/${pagination}`);
+      const animeList = response.data.data;
+      const dataPagination = response.data.pagination;
+      setPage(dataPagination);
+      setDataAnime(animeList);
     } catch (error) {
       console.log("Error fetching data:", error);
     }
   };
 
-  const calculateMaxPage = async (type) => {
-    let startPage = type === 'ongoing' ? 5 : 54;
-    let currentPage = startPage;
-
-
-
-    while (true) {
-      try {
-        const response = await axios.get(`${apiUrl}/${type}/page/${currentPage}`);
-        if (response.data.animeList.length === 0) {
-          setTotalPage(currentPage - 1);
-          break;
-        }
-        currentPage++;
-      } catch (error) {
-        console.log("Error checking max page:", error);
-        break;
-      }
-    }
-
-    setTotalPage(currentPage - 1);
-  };
-
   useEffect(() => {
-    getDataAnime(page);
-  }, [page]);
+    getDataAnime();
+  }, [pagination]);
 
   const handlePageChanges = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPage) {
-      setPage(newPage);
+      setPagination(newPage);
+      if(scrollRef.current){
+      scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
+  
 
   const divStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), url(${backgroundImage})`,
@@ -72,22 +45,20 @@ const CompleteAnime = () => {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     width: '100%',
+    height: '100vh',
+    overflow: 'hidden', 
   }
   return (
-    <div className='bg-base-200' style={divStyle}>
+    <div className='bg-base-200 h-screen flex flex-col' style={divStyle} >
       <Navbar />
-      <div className='mx-auto max-w-screen-lg mt-7 s flex flex-col gap-6 overflow-y-auto h-screen' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        <style jsx>{
-        `div::-webkit-scrollbar {
-         display: none;}`}
-         </style>
+      <div ref={scrollRef} className='mx-auto max-w-screen-lg mt-7 s flex flex-col gap-6 overflow-y-scroll h-full  flex-grow-0'  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <div className='p-4'>
           <h1 className='text-xl sm:text-2xl lg:text-3xl font-semibold font-serif'>Daftar {type.replace(/\b\w/g, char => char.toUpperCase())} Baru</h1>
         </div>
         <div className='flex flex-col gap-4'>
           <div className='flex justify-between px-4 '>
             <h4 className='text-base sm:text-lg lg:text-xl font-medium'>Total {dataAnime.length} </h4>
-            <p className='text-base sm:text-lg lg:text-xl'>Page {page}</p>
+            <p className='text-base sm:text-lg lg:text-xl'>Page {page.current_page}</p>
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-4'>
             {dataAnime.length > 0 ? (
@@ -95,31 +66,38 @@ const CompleteAnime = () => {
                 <div key={index} className="card card-side glass shadow-xl w-full md:max-w-lg">
                   <figure className='w-1/3'>
                     <img
-                      src={anime.thumb}
+                      src={anime.poster}
                       alt="Movie"
                       className='object-cover w-full h-full'
                     />
                   </figure>
-                  <div className="card-body w-2/3 p-4">
+                  <div className="card-body w-2/3 p-3">
                     <h2 className="card-title text-lg font-bold">{anime.title}</h2>
-                    {type === 'ongoing' ? <p className='text-sm'>Diperbarui ke: {anime.episode}</p> : <p className='text-sm'>Tamat: {anime.episode.replace('Episode', ' Episode')}</p>}
+                    {type === 'ongoing-anime' ? <p className='text-sm font-semibold'>Diperbarui ke: {anime.current_episode}</p> : <p className='text-sm font-semibold'>Tamat: {anime.episode_count} Episode</p>}
+
+                      {type === 'ongoing-anime' ? <p className='text-sm font-semibold'>Jadwal: {anime.release_day}</p> : <p className='text-sm font-semibold'>Rating: {anime.rating} ⭐</p>}
+
+                    {type === 'ongoing-anime' ? <p className='text-sm font-semibold'>Update: {anime.newest_release_date}</p> : <p className='text-sm font-semibold'>last Relase: {anime.last_release_date}</p>}
                     <div className="card-actions justify-end">
-                      <button className="btn btn-primary btn-md rounded-md">Watch</button>
+                      <Link to={`/anime/${anime.slug}`} className="btn btn-primary btn-md rounded-md w-full " >
+                      Watch
+                      </Link>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <p className='text-center text-lg sm:text-xl lg:text-2xl'>Data tidak tersedia</p>
+              <div className="flex justify-between w-full ">
+             <Skeleton arraySkeleton={8} />
+              </div>
             )}
 
           </div>
         </div>
-        {totalPage && (
+        
           <div className='p-4 self-center'>
-            <Pagination page={page} handlePageChanges={handlePageChanges} totalPage={totalPage} />
+          <Pagination currentPage={page.current_page} hasPreviousPage={page.has_previous_page} hasNextPage={page.has_next_page} lastPage={page.last_visible_page}  previousPage={page.previous_page} nextPage={page.next_page} handlePageChanges={handlePageChanges}/>
           </div>
-        )}
       </div>
     </div>
   );

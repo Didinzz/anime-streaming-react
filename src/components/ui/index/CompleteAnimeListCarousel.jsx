@@ -35,19 +35,17 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
         try {
             setLoading(true);
             // first request to get complete list anime
-            const response = await axios.get(`${apiUrl}/complete`);
-            const completeList = response.data.animeList;
-
+            const response = await axios.get(`${apiUrl}/home`);
+            const completeList = response.data.data.complete_anime;
             const animeListWithGenre = await Promise.all(
                 completeList.map(async (anime) => {
                     // second request to get genre complete anime list
-                    const animeGenreResponse = await axios.get(`${apiUrl}/anime/${anime.id}`);
-                    const genreList = animeGenreResponse.data.genre_list;
-
+                    const animeGenreResponse = await axios.get(`${apiUrl}/anime/${anime.slug}`);
+                    const genreList = animeGenreResponse.data.data.genres;
                     //merging data
                     return {
                         ...anime,
-                        genres: genreList.slice(0, 3).map((genre) => genre.genre_name), // extract genre name
+                        genres: genreList.slice(0, 3).map((genre) => genre.name), // extract genre name
                     };
 
                 })
@@ -74,7 +72,7 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
             <div className='flex justify-between items-center mt-3'>
                 <h1 className="text-xl font-bold  ml-10">Complete Anime</h1>
                 <div className='flex items-center mr-10 '>
-                    <Link to={'/complete'}>
+                    <Link to={'/complete-anime'}>
                     <p className='text-sm font-semibold'>Lihat lebih banyak</p>
                     </Link>
                     <IoIosArrowForward className=" ml-1 mt-1" />
@@ -93,17 +91,17 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
 
                     return (
                         <div className="slider relative h-fit" key={index}
-                            onMouseEnter={() => setisHover(anime.id)}
+                            onMouseEnter={() => setisHover(anime.slug)}
                             onMouseLeave={() => setisHover(null)}>
-                            <div className={`transition-transform duration-75 ease-in-out ${isHover === anime.id ? 'transform scale-[1.2] rounded-lg' : ''}`}>
+                            <div className={`transition-transform duration-75 ease-in-out ${isHover === anime.slug ? 'transform scale-[1.2] rounded-lg' : ''}`}>
                                 <div className="relative cursor-pointer">
                                     <img
-                                        src={anime.thumb}
+                                        src={anime.poster}
                                         alt="movie"
-                                        className={`w-full ${isHover === anime.id ? 'rounded-lg' : ''}`}  // Tambahkan rounded-lg di sini saat hover
+                                        className={`w-full ${isHover === anime.slug ? 'rounded-lg' : ''}`}  
                                     />
-                                    {isHover === anime.id && (
-                                        <Link to={`/anime/${anime.id}`} className="absolute top-0 left-0 right-0 bottom-0">
+                                    {isHover === anime.slug && (
+                                        <Link to={`/anime/${anime.slug}`} className="absolute top-0 left-0 right-0 bottom-0">
 
                                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-sky-500/10 via-sky-400/95 to-sky-400  p-4 flex flex-col justify-between items-start h-2/3 rounded-lg">
                                                 <div className='self-center'>
@@ -119,7 +117,7 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
                                                         ))}
                                                     </div>
 
-                                                    <p className='text-xs font-semibold font-sans text-white'>{anime.episode.replace('Episode', ' Episode')}</p>
+                                                    <p className='text-xs font-semibold font-sans text-white'>{anime.episode_count} Episode</p>
                                                 </div>
                                             </div>
                                         </Link>

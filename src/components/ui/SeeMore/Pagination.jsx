@@ -1,41 +1,46 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-const Pagination = ({ page, handlePageChanges, totalPage }) => {
-    const rangeSize = 3; // total halaman yang akan ditampilkan di tengah pagination
+const Pagination = ({ currentPage, lastPage, hasPreviousPage, hasNextPage, previousPage, nextPage, handlePageChanges }) => {
 
-    // ini adalah menentukan nomor halaman yang akan ditampilkan di tengah pagination
-    const startPage = Math.max(1, page - Math.floor(rangeSize / 2))
-    const endPage = Math.min(totalPage, startPage + rangeSize - 1)
+    console.log(currentPage, lastPage, hasPreviousPage, hasNextPage, previousPage, nextPage);
 
-    // Mengoreksi startPage jika endPage adalah halaman terakhir dan kita memiliki ruang untuk lebih banyak halaman di awal
-    const correctedStartPage = Math.max(1, Math.min(startPage, totalPage - rangeSize + 1))
+
     return (
-        <div className="join  ">
-            <button className={`join-item btn ${page <= 1 ? 'btn-disabled' : ''}`} onClick={() => handlePageChanges(page - 1)}>«</button>
-
-            {correctedStartPage > 1 && (
-                <>
-                    <button className="join-item btn" onClick={() => handlePageChanges(1)}>1</button>
-                    {page > 2 && <button className="join-item btn ">...</button>}
-                </>
+        <div className="join">
+            {hasPreviousPage && (
+                <button className="join-item btn" onClick={() => handlePageChanges(previousPage)}>«</button>
             )}
-            {/* Tombol Halaman Sekarang */}
-            {Array.from({ length: endPage - correctedStartPage + 1 }, (_, i) => i + correctedStartPage).map(pageNum => (
-                <button
-                    key={pageNum}
-                    className={`join-item btn ${pageNum === page ? 'btn-active' : ''}`}
-                    onClick={() => handlePageChanges(pageNum)}>
-                    {pageNum}
-                </button>
-            ))}
 
-            {endPage < totalPage && (
-                <>
-                    {endPage < totalPage - 1 && <button className="join-item btn ">...</button>}
-                    <button className="join-item btn" onClick={() => handlePageChanges(totalPage)}>{totalPage}</button>
-                </>
+            <button className={`join-item btn ${currentPage == 1 ? 'btn-active' : ''}`} onClick={() => handlePageChanges(1)}>1</button>
+
+            {/* elips lebih dari 3 */}
+            {currentPage > 3 && <button className="join-item btn">...</button>}
+
+            {/* previous button for last page */}
+            {nextPage === null && <button className="join-item btn" onClick={() => handlePageChanges(previousPage - 1)}>{previousPage - 1}</button>}
+
+            {/* previous button  */}
+            {currentPage > 2 && currentPage <= lastPage && <button className="join-item btn" onClick={() => handlePageChanges(previousPage)}>{previousPage}</button>}
+
+            {/* current button */}
+            {currentPage != 1 && currentPage != lastPage && <button className={`join-item btn btn-active`}>{currentPage}</button>}
+
+            {/* next button */}
+            {currentPage < lastPage - 1 && <button className="join-item btn" onClick={() => handlePageChanges(nextPage)}>{nextPage}</button>}
+
+            {/* next button for start page */}
+            {previousPage === null && <button className="join-item btn" onClick={() => handlePageChanges(nextPage + 1)}>{nextPage + 1}</button>}
+
+            {/* elips */}
+            {currentPage < lastPage - 2 && <button className="join-item btn">...</button>}
+
+
+            {/* last button */}
+            <button className={`join-item btn ${currentPage == lastPage ? 'btn-active' : ''}`} btn onClick={() => handlePageChanges(lastPage)}>{lastPage}</button>
+
+            {hasNextPage && (
+                <button className="join-item btn">»</button>
             )}
-            <button className={`join-item btn ${page >= totalPage ? 'btn-disabled' : ''}`} onClick={() => handlePageChanges(page + 1)}>»</button>
         </div>
     )
 }

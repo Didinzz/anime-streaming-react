@@ -11,19 +11,14 @@ const TabelListEpisode = ({ episodeList }) => {
                         <th scope="col" className="px-6 py-2 w-3/4">
                             Episode
                         </th>
-                        <th scope="col" className="px-6 py-2 mr-auto w-1/4 text-center">
-                            Tanggal rilis
-
-                        </th>
                     </tr>
                 </thead>
                 <tbody className='basis-2/3'>
-                    {episodeList.map((eps, index)=> (
+                    {episodeList.slice().reverse().map((eps, index)=> (
                     <tr className="hover:bg-base-200" key={index}>
                         <th scope="row" className="px-6 py-2">
-                            <Link to={`${eps.link}`}>{eps.title}</Link>
+                                <Link to={`${eps.otakudesu_url}`}>{index} {eps.episode}</Link>
                         </th>
-                            <td className="px-6 py-2 text-center">{eps.uploaded_on}</td>
                     </tr>
                     ))}
 

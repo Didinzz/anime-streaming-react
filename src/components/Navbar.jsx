@@ -10,6 +10,7 @@ import { MdOutlineLogout, MdDevices } from "react-icons/md";
 import { PiFilmReelThin, PiFireBold } from "react-icons/pi";
 import { useLocation } from 'react-router';
 import HamburgerIcon from './HamburgerIcon';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ isScrolled, setIsScrolled}) => {
     // const [isProvile, setisProvile] = useState(false);
@@ -34,10 +35,12 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
 
     return (
         <header className={`navbar w-full h-16  flex p-5 justify-between items-center z-50 top-0  ${isLandingPage ? 'fixed' : ''} transition-colors duration-300 ${isScrolled && isLandingPage ? 'bg-base-100' : isLandingPage ? 'bg-transparent' : 'bg-base-100'}`} > {/* Left section */}
+        <Link to={'/'}>
             <div className='flex items-center gap-6'>
                 {/* <HamburgerIcon isLandingPage={isLandingPage} isScrolled={isScrolled} isSidebarOpen={isSidebarOpen} setisSidebarOpen={setisSidebarOpen}/> */}
                 <img src="/image/bstation.svg" alt="" className='' />
             </div>
+        </Link>
 
             {/* Search section */}
             <div className='flex w-[35rem] items-center justify-center shadow-sm'>
