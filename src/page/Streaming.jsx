@@ -1,48 +1,94 @@
 import React, { useEffect, useState } from 'react'
-import ReactPlayer from 'react-player'
-import Navbar from '../components/Navbar'
 import axios from 'axios'
-const Streaming = () => {
-  const [episode, setEpisode] = useState([])
-  const apiUrl = import.meta.env.VITE_API
+import { useParams } from 'react-router'
+import Navbar from '../components/Navbar'
+import Caption from '../components/ui/Streaming/Caption'
+import Footer from '../components/Footer'
+import ListEpisode from '../components/ui/Streaming/ListEpisode'
+import Loading from '../components/Loading'
+import BarPlayer from '../components/ui/Streaming/BarPlayer'
 
+const Streaming = () => {
+  const [dataAnime, setDataAnime] = useState([]);
+  const [dataStream, setDataStream] = useState([]);
+  const [episode, setEpisode] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const apiUrl = import.meta.env.VITE_API;
+  const { id, slugStream } = useParams();
 
   const getStreamingAnime = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/anime/1piece-sub-indo`)
+      setLoading(true);
+      const responseStreaming = await axios.get(`${apiUrl}/episode/${slugStream}`);
+      const dataStreaming = responseStreaming.data.data;
+      const response = await axios.get(`${apiUrl}/anime/${id}`);
+      const anime = response.data.data 
 
-      setEpisode(response.data.data.episode_lists);
+      const getEpisode = anime.episode_lists.map((eps)=>{
+        const episodeMatch = eps.episode.match(/Episode\s+(\d+)/i);
+        const episodeNumber = episodeMatch ? episodeMatch[1] : null;
+
+        return {
+          ...eps,
+          episode: episodeNumber
+        }
+      })
+
+      setEpisode(getEpisode);
+      setDataAnime(anime);
+      setDataStream(dataStreaming)
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    }finally{
+      setLoading(false)
     }
-  }
+  };
 
   useEffect(() => {
-    getStreamingAnime()
-  }, [])
+    getStreamingAnime();
+  }, [slugStream]);
+
+
 
   return (
     <>
-    <Navbar />
-      <div className='w-full h-screen grid grid-cols-4 bg-red-600 px-8 pt-7 gap-10'>
-          <div className='col-span-3 pl-20 '>
-
-            <iframe src="https://desudrive.com/dstream/playdesu/index.php?id=MnBXN1dwZWEzbHFLNjh4NGt5KzdlRFhtKzlJMnhMSUxQejRMT0hNT3dSRT0=" frameborder="0" className='w-[100%] h-[85%] rounded-lg'></iframe>
-
+      <Navbar />
+      <div className="flex flex-col min-h-screen ">
+        {/* Konten Utama */}
+        <div className="flex flex-col lg:flex-row flex-grow px-8 pt-7 font-sans gap-5">
+          <div className="flex-1 flex flex-col items-center lg:pl-20 h-fit">
+            {loading ? (
+              <div className='w-full h-[80vh] flex justify-center items-center'>
+              <Loading />
+              </div>
+            ): (
+            <iframe
+              src={dataStream.stream_url}
+              frameBorder="10"
+              className="w-full h-[80vh] rounded-lg"
+              allowFullScreen
+            ></iframe>
+            )}
           </div>
-
-        <div className='col-span-1 bg-yellow-900   '>
-            <h1 className='text-2xl font-semibold '>Semua Episode</h1>
-          <div className='grid grid-cols-4 overflow-y-auto bg-blue-900 h-[calc(100vh-200px)]'>
-            {episode.slice().reverse().map((eps, index)=> (
-              <button className='btn w-14 h-2 mb-1'>{eps.episode}</button>
-            ))}
+          <div className="lg:w-1/4 w-full flex flex-col">
+            <h1 className="text-2xl font-semibold mb-4">Semua Episode</h1>
+            <div className="flex flex-col overflow-y-auto lg:h-[calc(100vh-200px)] h-auto max-h-[400px] lg:max-h-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {dataAnime.episode_lists && dataAnime.episode_lists.length > 0 && (
+                <ListEpisode episodeList={dataAnime.episode_lists} idAnime={id} slugStream={slugStream} numberEpisode={episode}/>
+              )}
             </div>
           </div>
-
         </div>
-    </>
-  )
-}
 
-export default Streaming
+        {/* Caption */}
+        <div className="pr-8 w-full lg:w-3/4 lg:pl-20 mb-20">
+          <Caption dataStream={dataStream} dataAnime={dataAnime}/>
+        </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </>
+  );
+};
+
+export default Streaming;

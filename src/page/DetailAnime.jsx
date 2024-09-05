@@ -8,7 +8,7 @@ import TabelListEpisode from '../components/ui/index/TabelListEpisode';
 import Skeleton from '../components/Skeleton';
 
 const DetailAnime = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [detailAnime, setDetailAnime] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +16,7 @@ const DetailAnime = () => {
     const apiUrl = import.meta.env.VITE_API;
     try {
       setLoading(true);
-      const response = await axios.get(`${apiUrl}/anime/${id}`);
+      const response = await axios.get(`${apiUrl}/anime/${slug}`);
       // console.log(response.data.data);
       setDetailAnime(response.data.data);
     } catch (error) {
@@ -39,7 +39,7 @@ const DetailAnime = () => {
   return (
     <>
       <Navbar />
-      <div className='bg-base-300 w-full h-auto lg:min-h-[100vh] p-4 lg:p-8 flex justify-center items-center'>
+      <div className=' w-full h-auto lg:min-h-[100vh] p-4 lg:p-8 flex justify-center items-center'>
         <div className='flex lg:flex-row flex-col font-sans w-full max-w-6xl items-center justify-center lg:items-start gap-4'>
             <img
               src={detailAnime.poster}
@@ -69,7 +69,11 @@ const DetailAnime = () => {
                   <p>No genres available</p>
                 )}
               </div>
-              <p>{detailAnime.synopsis}tes</p>
+              {detailAnime.synopsis ? (
+                <p>{detailAnime.synopsis}</p>
+              ):(
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores dolorem ex in consequuntur ipsam debitis numquam ullam consequatur adipisci? Natus eos, repellat illo quaerat aperiam minima! Vitae sed ut possimus nostrum corrupti fuga cum facilis quidem atque, ipsam natus voluptatibus cumque laboriosam ratione nisi temporibus odio? Placeat ratione fuga ab.</p>
+              )}
               <label htmlFor='my_modal_6' className='btn mt-4 py-3 px-6 bg-blue-500 hover:bg-blue-600 w-fit rounded-lg flex justify-center items-center gap-2 cursor-pointer'>
                 <FaPlay className='text-white' />
                 <label htmlFor='my_modal_6' className='text-white font-bold'>Segera Tonton</label>
@@ -83,7 +87,7 @@ const DetailAnime = () => {
                     <h3 className="text-lg font-bold ">List Episode {detailAnime.title}</h3>
                   </div>
                   {detailAnime.episode_lists && detailAnime.episode_lists.length > 0 ? (
-                    <TabelListEpisode episodeList={detailAnime.episode_lists} />
+                    <TabelListEpisode episodeList={detailAnime.episode_lists} idAnime={slug} />
                   ) : (
                     <p>Tidak ada episode yang tersedia</p>
                   )}

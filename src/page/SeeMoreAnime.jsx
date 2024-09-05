@@ -6,6 +6,7 @@ import Pagination from '../components/ui/SeeMore/Pagination';
 import backgroundImage from '../../public/image/animekeren.jpg';
 import { Link } from 'react-router-dom';
 import Skeleton from '../components/Skeleton';
+import Loading from '../components/Loading';
 
 const CompleteAnime = () => {
   const [dataAnime, setDataAnime] = useState([]);
@@ -36,9 +37,6 @@ const CompleteAnime = () => {
       scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
-  
-
   const divStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), url(${backgroundImage})`,
     backgroundSize: 'cover',
@@ -87,8 +85,8 @@ const CompleteAnime = () => {
                 </div>
               ))
             ) : (
-              <div className="flex justify-between w-full ">
-             <Skeleton arraySkeleton={8} />
+              <div className="flex justify-center items-center w-full ">
+             <Loading />
               </div>
             )}
 

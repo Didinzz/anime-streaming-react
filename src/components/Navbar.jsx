@@ -8,17 +8,28 @@ import { RiErrorWarningLine, RiHdLine } from "react-icons/ri";
 import { BsChatSquare } from "react-icons/bs";
 import { MdOutlineLogout, MdDevices } from "react-icons/md";
 import { PiFilmReelThin, PiFireBold } from "react-icons/pi";
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import HamburgerIcon from './HamburgerIcon';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ isScrolled, setIsScrolled}) => {
-    // const [isProvile, setisProvile] = useState(false);
+const Navbar = ({ isScrolled, setIsScrolled }) => {
+    const [search, setSearch] = useState('')
+    // const [searchHistory, setSearchHistory] = useState([])
     const location = useLocation()
     const isLandingPage = location.pathname === '/';
+    const navigate = useNavigate();
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if(search.trim()){
+            navigate(`/search/${encodeURIComponent(search)}`)
+            // setSearchHistory([...searchHistory, search])
+            
+        }
+    }
 
     useEffect(() => {
-        if(!isLandingPage) return;
+        if (!isLandingPage) return;
         const handleScroll = () => {
             if (window.scrollY > 200) {
                 setIsScrolled(true)
@@ -34,80 +45,35 @@ const Navbar = ({ isScrolled, setIsScrolled}) => {
 
 
     return (
-        <header className={`navbar w-full h-16  flex p-5 justify-between items-center z-50 top-0  ${isLandingPage ? 'fixed' : ''} transition-colors duration-300 ${isScrolled && isLandingPage ? 'bg-base-100' : isLandingPage ? 'bg-transparent' : 'bg-base-100'}`} > {/* Left section */}
-        <Link to={'/'}>
-            <div className='flex items-center gap-6'>
-                {/* <HamburgerIcon isLandingPage={isLandingPage} isScrolled={isScrolled} isSidebarOpen={isSidebarOpen} setisSidebarOpen={setisSidebarOpen}/> */}
-                <img src="/image/bstation.svg" alt="" className='' />
-            </div>
-        </Link>
+        <header className={`navbar w-full h-16  flex p-5 justify-between items-center z-50 top-0   ${isLandingPage ? 'fixed' : ''} transition-colors duration-300 ${isScrolled && isLandingPage ? 'bg-base-100 shadow-md' : isLandingPage ? 'bg-transparent' : 'bg-base-100 shadow-md'}`} > {/* Left section */}
+            <Link to={'/'}>
+                <div className='flex items-center gap-6'>
+                    <img src="/image/bstation.svg" alt="" className='w-24 sm:w-36' />
+                </div>
+            </Link>
 
             {/* Search section */}
-            <div className='flex w-[35rem] items-center justify-center shadow-sm'>
+            <form onSubmit={handleSearchSubmit} className='flex w-1/2 lg:w-[35rem] items-center justify-center shadow-sm mx-4 sm:mx-0'>
                 <div className='bg-base-300 h-10 flex justify-center items-center rounded-l-md p-2 '>
                     <FiSearch size={14}
                         className='' />
                 </div>
-                <input className='w-full h-10 rounded-r-md bg-base-300 focus:outline-none focus:ring-0 focus:border-none outline-none ring-0 border-none' type="text" placeholder='Cari' />
-            </div>
+                <input className='w-full h-10 rounded-r-md bg-base-300 focus:outline-none focus:ring-0 focus:border-none outline-none ring-0 border-none' 
+                type="text" 
+                placeholder='Cari'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                 />
+            </form>
 
-            <div className='flex justify-center items-center gap-8'> 
+            <div className='flex justify-center items-center gap-8'>
 
-                <div className={`hidden sm:flex justify-center items-center gap-1 p-2 ${isScrolled ? 'bg-base-300' : 'bg-gray-200 text-black'} rounded-md w-24 h-8`}>
+                <div className={`hidden lg:flex justify-center items-center gap-1 p-2 ${isScrolled ? 'bg-base-300' : 'bg-gray-200 text-black'} rounded-md w-24 h-8`}>
                     <FiDownload size={14} />
                     <p className={`text-[0.8em] `} >Aplikasi</p>
                 </div>
 
                 {/* Premium */}
-                <div className='hidden sm:flex justify-center items-center bg-[#FF4A80] rounded-md w-28 h-8 relative dropdown dropdown-hover '>
-                    <div className='flex justify-center items-center gap-2 cursor-pointer' tabIndex={1}>
-                        <SlDiamond size={14}
-                            className='text-white' />
-                        <p className='text-white text-sm'>Premium</p>
-                    </div>
-                    {/* dropdown premium */}
-                        <div className=' absolute top-8 -left-[17rem] bg-base-100 rounded-md shadow-md w-[28rem] h-fit dropdown-content menu' tabIndex={0}>
-                            <div className='p-6 flex justify-between items-center' >
-                            <h3 className='font-bold  text-[1.1em]'>Ketuntungan Premium</h3>
-                                <IoIosArrowForward size={20} />
-                            </div>
-                            <div className='flex flex-col gap-5 px-6 mb-6'>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <PiFilmReelThin size={25} />
-                                    <h4 className='font-sans text-[1em]'>Kontent Premium</h4>
-                                </div>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <PiFireBold size={23} />
-                                    <h4 className='font-sans text-[1em]'>Lebih Awal</h4>
-                                </div>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <RiHdLine size={23} />
-                                    <h4 className='font-sans text-[1em]'>Resolusi HD</h4>
-                                </div>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <MdDevices size={23} />
-                                    <h4 className='font-sans text-[1em]'>Multi perangkat</h4>
-                                </div>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <IoMdDownload size={23} />
-                                    <h4 className='font-sans text-[1em]'>Gratis unduh</h4>
-                                </div>
-                                <div className=' gap-2 flex justify-normal items-center cursor-pointer'>
-                                    <div className='relative'>
-                                        <FaAd size={23} />
-                                        <FaSlash size={23} className='absolute top-0 left-0 text-sm font-extralight' />
-                                    </div>
-                                    <h4 className='font-sans text-[1em]'>Lewati iklan</h4>
-                                </div>
-                            </div>
-                            <div className='m-6'>
-                                <button className='bg-[#FF4A80] w-full p-2 rounded-md text-white font-sans font-bold text-[1.1rem]'>Jadi Premium</button>
-                            </div>
-
-
-                        </div>
-
-                </div>
 
                 {/* profile */}
                 <div className='relative dropdown dropdown-hover'>
