@@ -18,7 +18,7 @@ const OngoingList = ({ setisHover, isHover }) => {
             const ongoingAnime = response.data.data.ongoing_anime;
             // setOngoingAnimeList(ongoingAnime);
             const ongoingAnimeList = await Promise.all(
-                ongoingAnime.map(async(anime)=> {
+                ongoingAnime.map(async (anime) => {
                     const response = await axios.get(`${apiUrl}/anime/${anime.slug}`);
                     const genreList = response.data.data.genres;
 
@@ -40,9 +40,15 @@ const OngoingList = ({ setisHover, isHover }) => {
         getOngoingAnimeList();
     }, []);
 
+    const skeletonArray = 15;
+
     if (isLoading) return (
-        <div className='my-5'>
-            <Skeleton arraySkeleton={6} />
+        <div className='flex mt-7'>
+            {[...Array(skeletonArray)].map((_, index) => (
+                <div key={index}>
+                    <Skeleton arraySkeleton={6} />
+                </div>
+            ))}
         </div>
     );
 
@@ -52,7 +58,7 @@ const OngoingList = ({ setisHover, isHover }) => {
                 <h1 className='font-bold text-xl'>Ongoing Anime</h1>
                 <div className='flex items-center'>
                     <Link to={"/ongoing-anime"}>
-                    <p className='text-sm font-semibold'>Lihat lebih banyak</p>
+                        <p className='text-sm font-semibold'>Lihat lebih banyak</p>
                     </Link>
                     <IoIosArrowForward className='ml-1' />
                 </div>
@@ -86,11 +92,11 @@ const OngoingList = ({ setisHover, isHover }) => {
                                                 <div className='flex flex-col items-start gap-2'>
                                                     <p className='text-xs font-bold font-sans text-white'>{anime.title}</p>
                                                     <div className="flex flex-row gap-1">
-                                                        {anime.genres.map((genre, index)=>(
-                                                        <p key={index} className="text-[0.6rem] font-semibold font-sans text-white bg-sky-500 px-2 py-[0.15rem] rounded-sm">
+                                                        {anime.genres.map((genre, index) => (
+                                                            <p key={index} className="text-[0.6rem] font-semibold font-sans text-white bg-sky-500 px-2 py-[0.15rem] rounded-sm">
                                                                 {genre}
-                                                        </p>
-                                                            ))}
+                                                            </p>
+                                                        ))}
                                                     </div>
                                                     <div className="flex flex-row gap-1">
                                                         <p className="text-[0.6rem] font-semibold font-sans text-white bg-sky-500 px-2 py-[0.15rem] rounded-sm">
@@ -104,8 +110,8 @@ const OngoingList = ({ setisHover, isHover }) => {
                                         {isHover !== anime.slug && (
 
                                             <p className='text-sm font-semibold font-sans mt-2'>{anime.title}</p>
-                                            )}
-                                           
+                                        )}
+
                                     </div>
                                 </div>
                             </Link>

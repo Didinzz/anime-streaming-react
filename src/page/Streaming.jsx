@@ -7,6 +7,7 @@ import Footer from '../components/Footer'
 import ListEpisode from '../components/ui/Streaming/ListEpisode'
 import Loading from '../components/Loading'
 import BarPlayer from '../components/ui/Streaming/BarPlayer'
+import DetailAnime from './DetailAnime'
 
 const Streaming = () => {
   const [dataAnime, setDataAnime] = useState([]);
@@ -71,7 +72,9 @@ const Streaming = () => {
             )}
           </div>
           <div className="lg:w-1/4 w-full flex flex-col">
-            <h1 className="text-2xl font-semibold mb-4">Semua Episode</h1>
+            {loading ? (
+              <div className="skeleton h-4 w-1/2 mb-5"></div>
+            ) : (<h1 className="text-2xl font-semibold mb-4">Semua Episode</h1>)}
             <div className="flex flex-col overflow-y-auto lg:h-[calc(100vh-200px)] h-auto max-h-[400px] lg:max-h-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {dataAnime.episode_lists && dataAnime.episode_lists.length > 0 && (
                 <ListEpisode episodeList={dataAnime.episode_lists} idAnime={id} slugStream={slugStream} numberEpisode={episode}/>

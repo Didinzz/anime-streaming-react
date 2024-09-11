@@ -62,10 +62,17 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
         completeAnimeWithGenre();
     }, []);
 
+    const skeletonArray =  15;
+
     if (isLoading) return (
-        <div className='my-5'>
-            <Skeleton arraySkeleton={6}/>
+        <div className='flex mt-2 justify-center'>
+            {[...Array(skeletonArray)].map((_, index) => (
+                <div key={index}>
+                    <Skeleton />
+                </div>
+            ))}
         </div>
+
     );
     return (
         <div className="parent">
@@ -73,7 +80,7 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
                 <h1 className="text-xl font-bold  ml-10">Complete Anime</h1>
                 <div className='flex items-center mr-10 '>
                     <Link to={'/complete-anime'}>
-                    <p className='text-sm font-semibold'>Lihat lebih banyak</p>
+                        <p className='text-sm font-semibold'>Lihat lebih banyak</p>
                     </Link>
                     <IoIosArrowForward className=" ml-1 mt-1" />
                 </div>
@@ -98,7 +105,7 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
                                     <img
                                         src={anime.poster}
                                         alt="movie"
-                                        className={`w-full ${isHover === anime.slug ? 'rounded-lg' : ''}`}  
+                                        className={`w-full ${isHover === anime.slug ? 'rounded-lg' : ''}`}
                                     />
                                     {isHover === anime.slug && (
                                         <Link to={`/anime/${anime.slug}`} className="absolute top-0 left-0 right-0 bottom-0">

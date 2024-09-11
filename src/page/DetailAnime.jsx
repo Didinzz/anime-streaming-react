@@ -6,6 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import Footer from '../components/Footer';
 import TabelListEpisode from '../components/ui/index/TabelListEpisode';
 import Skeleton from '../components/Skeleton';
+import Loading from '../components/Loading';
 
 const DetailAnime = () => {
   const { slug } = useParams();
@@ -21,7 +22,7 @@ const DetailAnime = () => {
       setDetailAnime(response.data.data);
     } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -32,7 +33,7 @@ const DetailAnime = () => {
 
   if (loading) return (
     <div className='flex items-center justify-center h-screen'>
-      <Skeleton arraySkeleton={1} />
+      <Loading />
     </div>
   );
 
@@ -41,11 +42,11 @@ const DetailAnime = () => {
       <Navbar />
       <div className=' w-full h-auto lg:min-h-[100vh] p-4 lg:p-8 flex justify-center items-center'>
         <div className='flex lg:flex-row flex-col font-sans w-full max-w-6xl items-center justify-center lg:items-start gap-4'>
-            <img
-              src={detailAnime.poster}
-              alt=""
+          <img
+            src={detailAnime.poster}
+            alt=""
             className='w-[70%] h-auto max-w-[350px] lg:max-w-[400px] object-cover rounded-lg basos basis-full lg:basis-1/2'
-            />
+          />
           <div className='flex flex-col gap-4 basis-full lg:basis-1/2 lg:pl-6 h-full'>
             <div className="flex flex-col gap-2 text-center lg:text-left">
               <h1 className='text-2xl font-bold mb-3'>{detailAnime.title}</h1>
@@ -71,7 +72,7 @@ const DetailAnime = () => {
               </div>
               {detailAnime.synopsis ? (
                 <p>{detailAnime.synopsis}</p>
-              ):(
+              ) : (
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores dolorem ex in consequuntur ipsam debitis numquam ullam consequatur adipisci? Natus eos, repellat illo quaerat aperiam minima! Vitae sed ut possimus nostrum corrupti fuga cum facilis quidem atque, ipsam natus voluptatibus cumque laboriosam ratione nisi temporibus odio? Placeat ratione fuga ab.</p>
               )}
               <label htmlFor='my_modal_6' className='btn mt-4 py-3 px-6 bg-blue-500 hover:bg-blue-600 w-fit rounded-lg flex justify-center items-center gap-2 cursor-pointer'>

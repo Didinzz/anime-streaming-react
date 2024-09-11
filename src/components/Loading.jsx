@@ -1,8 +1,8 @@
 import React from 'react'
-
+import '../../public/css/Loading.css'
 const Loading = () => {
   return (
-      <div className="self-center rounded-md h-12 w-12 border-4 border-t-4 border-blue-500 animate-spin absolute"></div>
+    <div class="loader"></div>
   )
 }
 

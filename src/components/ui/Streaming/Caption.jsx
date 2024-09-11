@@ -5,22 +5,23 @@ const Caption = ({ dataStream, dataAnime }) => {
   return (
     <>
       <div className='font-sans mt-10 flex flex-col gap-3 h-fit '>
-        <h1 className='text-2xl font-semibold '>{dataStream.episode}</h1>
-{dataAnime.genres && dataAnime.genres.length > 0 &&(
-        <div className='flex gap-3 flex-row '>
-          {dataAnime.genres.map((genre, index) => (
-          <button key={index} className='btn btn-xs font-semibold text-blue-700'>{genre.name}</button>
-          ))}
-        </div>
-)}
+        {dataStream.episode ? (
+          <h1 className='text-2xl font-semibold '>{dataStream.episode}</h1>
+          
+        ) : (<div className="skeleton h-4 w-52"></div>)}
+
+        {dataAnime.genres && dataAnime.genres.length > 0 ? (
+          <div className='flex gap-3 flex-row '>
+            {dataAnime.genres.map((genre, index) => (
+              <button key={index} className='btn btn-xs font-semibold text-blue-700'>{genre.name}</button>
+            ))}
+          </div>
+        ) : (<div className="skeleton h-4 w-96"></div>)}
         <div>
           {dataAnime.synopsis ? (
 
-            <p className='indent-8 break-all'>{dataAnime.synopsis}</p>
-          ):(
-
-            <p className='indent-8 break-all'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque aliquam voluptates temporibus nihil cupiditate! Asperiores tempora eius corporis quia. Ea enim eligendi tempore laudantium eaque. Exercitationem commodi ab voluptatem inventore iste numquam nulla. Totam vitae voluptatum, provident illo ducimus corrupti facilis quo, cumque minus quae possimus error delectus tenetur at?</p>
-          )}
+            <p className='indent-8 break-all pl-10 sm:p-0'>{dataAnime.synopsis}</p>
+          ) : (<div className="skeleton h-4 w-full"></div>)}
         </div>
 
       </div>
