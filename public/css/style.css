@@ -32,10 +32,6 @@ button.react-multiple-carousel__arrow.react-multiple-carousel__arrow--right {
     z-index: auto;
 }
 
-button.react-multiple-carousel__arrow.react-multiple-carousel__arrow--right:hover {
-    background: rgb(0, 0, 0);
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5662640056022409) 68%, rgba(0, 0, 0, 1) 100%);
-}
 button.react-multiple-carousel__arrow.react-multiple-carousel__arrow--left {
     left: calc(1% + 2px);
     top: calc(6% + 0.2rem);
@@ -47,7 +43,3 @@ button.react-multiple-carousel__arrow.react-multiple-carousel__arrow--left {
     z-index: 0;
 }
 
-button.react-multiple-carousel__arrow.react-multiple-carousel__arrow--left:hover {
-    background: rgb(0, 0, 0);
-    background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5662640056022409) 68%, rgba(0, 0, 0, 1) 100%);
-}
