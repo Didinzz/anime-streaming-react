@@ -30,6 +30,7 @@ const MultiCarouselLanding = ({ setisHover, isHover }) => {
         }
     };
 
+
     const completeAnimeWithGenre = async () => {
         const apiUrl = import.meta.env.VITE_API;
         try {

@@ -1,0 +1,48 @@
+@keyframes bar1 {
+
+    0%,
+    100% {
+        height: 5px;
+    }
+
+    50% {
+        height: 12px;
+    }
+}
+
+@keyframes bar2 {
+
+    0%,
+    100% {
+        height: 2.5px;
+    }
+
+    50% {
+        height: 10px;
+    }
+}
+
+@keyframes bar3 {
+
+    0%,
+    100% {
+        height: 4px;
+    }
+
+    50% {
+        height: 15px;
+    }
+}
+
+
+.animate-bar1 {
+    animation: bar1 0.4s infinite ease-in-out;
+}
+
+.animate-bar2 {
+    animation: bar2 0.5s infinite ease-in-out;
+}
+
+.animate-bar3 {
+    animation: bar3 0.6s infinite ease-in-out;
+}
